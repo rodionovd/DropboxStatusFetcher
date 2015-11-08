@@ -8,6 +8,7 @@
 
 #import "DropboxStatusFetcher.h"
 
+#define HUMAN_READABLE_DESCRIPTIONS 1
 #define kTimeout (3)
 
 @interface DropboxStatusFetcher() <NSMachPortDelegate>
@@ -41,6 +42,8 @@
     [self.localPort setDelegate: nil];
 }
 
+#pragma mark - Public API
+
 - (DropboxSyncStatus)fileSyncStatusForFileAtURL: (NSURL *)fileURL
 {
     NSMutableData *data = [[NSMutableData alloc] init];
@@ -60,6 +63,8 @@
     return self.remotePort.isValid && [self _watchSet].count > 0;
 }
 
+#pragma mark - Implementation Details
+
 - (NSSet *)_watchSet
 {
     // Send an empty payload in order to request the current watch set
@@ -75,6 +80,16 @@
 
 + (NSString *)descriptionForSyncStatus: (DropboxSyncStatus)status
 {
+#if HUMAN_READABLE_DESCRIPTIONS
+    switch (status) {
+        case NotExist: return @"No such file or directory";
+        case UpToDate: return @"The file is up to date";
+        case SynchronizingNow: return @"The file is synchronizing";
+        case SynchronizationError: return @"There's a synchronization problem. Try again later";
+        case Ignored: return @"The file is ignored (i.e. excluded from sync)";
+        case NotRunning: return @"Dropbox application is not running";
+    }
+#else
     switch (status) {
         case NotExist: return @"not_exist";
         case UpToDate: return @"up_to_date";
@@ -83,6 +98,7 @@
         case Ignored: return @"ignored";
         case NotRunning: return @"not_running";
     }
+#endif
     return @"<???>";
 }
 
