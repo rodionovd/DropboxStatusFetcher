@@ -1,9 +1,21 @@
 # Dropbox Status Fetcher (for OS X)
 
-Query a synchronization status of a local file in your [Dropbox](https://www.dropbox.com) folder. It would be one of `up_to_date`, `synchronizing`, `not_exist`, `sync_problem`, `not_running` or `ignored`.
+Query a synchronization status of a local file in your [Dropbox](https://www.dropbox.com) folder. It should be either:
 
-Works on OS X (10.11. maybe earlier) with the latest version of Dropbox installed.
+1. File is up to date.
+2. File is synchronizing now.
+3. File doesn't exist.
+4. There is a sync error.
+5. File is ignored (i.e. excluded from sync).
+6. Dropbox application is not running.
 
+### Requirements
+
+You should have [Dropbox.app](https://www.dropbox.com/install) up and running.
+
+### Compatibility
+
+Tested on OS X 10.11 with Dropbox.app (3.10.9) installed. Might work with older versions as well
 
 ### Usage
 
@@ -24,13 +36,9 @@ $ ./DropboxStatusFetcher ~/Dropbox/MyMovie.m4v
 # > synchronizing
 ```
 
-### Build & Run
+### How to build
 
-Open the `.xcodeproj` file with Xcode and hit the *Run* button (<kbd>⌘</kbd>+<kbd>R</kbd>).
-
-### Downloads
-
-*to be done*
+Open the `.xcodeproj` file with Xcode and hit the *Build* button (<kbd>⌘</kbd>+<kbd>B</kbd>).
 
 ---
 
