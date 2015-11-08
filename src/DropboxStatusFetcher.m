@@ -104,8 +104,6 @@
 
 - (void)connect
 {
-    NSAssert([NSThread isMainThread] == YES, @"%s should happen on the main thread.", __PRETTY_FUNCTION__);
-
     // Obtain a remote port for the Dropbox's Garcon service
     NSString *portName = [NSString stringWithFormat: @"com.getdropbox.dropbox.garcon.cafe_%u", getuid()];
     NSMachBootstrapServer *server = [NSMachBootstrapServer sharedInstance];
@@ -125,8 +123,6 @@
 
 - (id)sendRequestOfType: (int)type withData: (NSData *)data
 {
-    NSAssert([NSThread isMainThread] == YES, @"%s should happen on the main thread.", __PRETTY_FUNCTION__);
-
     if (self.remotePort == nil || self.remotePort.isValid == NO) {
         NSLog(@"Reconnecting.");
         [self connect];
