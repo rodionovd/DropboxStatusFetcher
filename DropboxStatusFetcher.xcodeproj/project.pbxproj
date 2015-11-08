@@ -11,23 +11,12 @@
 		0A472D0A1BEBE013007BD62B /* DropboxStatusFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A472D091BEBE013007BD62B /* DropboxStatusFetcher.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		0A3C12021BEBA047004EB59F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		0A3C12041BEBA047004EB59F /* DropboxStatusFetcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DropboxStatusFetcher; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A3C12071BEBA047004EB59F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0A472D081BEBE013007BD62B /* DropboxStatusFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxStatusFetcher.h; sourceTree = "<group>"; };
 		0A472D091BEBE013007BD62B /* DropboxStatusFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxStatusFetcher.m; sourceTree = "<group>"; };
+		0A6714A21BEF611900AA11E0 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +33,7 @@
 		0A3C11FB1BEBA047004EB59F = {
 			isa = PBXGroup;
 			children = (
+				0A6714A21BEF611900AA11E0 /* README.markdown */,
 				0A3C12061BEBA047004EB59F /* DropboxStatusFetcher */,
 				0A3C12051BEBA047004EB59F /* Products */,
 			);
@@ -77,7 +67,6 @@
 			buildPhases = (
 				0A3C12001BEBA047004EB59F /* Sources */,
 				0A3C12011BEBA047004EB59F /* Frameworks */,
-				0A3C12021BEBA047004EB59F /* CopyFiles */,
 			);
 			buildRules = (
 			);
