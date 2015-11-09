@@ -9,7 +9,7 @@
 @import Foundation;
 #import "DropboxStatusFetcher.h"
 
-int RDLog(NSString *format, ...)
+int RDPrint(NSString *format, ...)
 {
     va_list vargs;
     va_start(vargs, format);
@@ -21,7 +21,7 @@ int RDLog(NSString *format, ...)
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         if (argc < 2) {
-            RDLog(@"Usage: %s <file path>", argv[0]);
+            RDPrint(@"Usage: %s <file path>", argv[0]);
             return EXIT_SUCCESS;
         }
 
@@ -29,7 +29,7 @@ int main(int argc, const char * argv[]) {
         DropboxStatusFetcher *fetcher = [DropboxStatusFetcher new];
         // Verify that Dropbox is actually running
         if ([fetcher isActive] == NO) {
-            RDLog(@"%@", [DropboxStatusFetcher descriptionForSyncStatus: NotRunning]);
+            RDPrint(@"%@", [DropboxStatusFetcher descriptionForSyncStatus: NotRunning]);
             return EXIT_SUCCESS;
         }
 
@@ -37,11 +37,11 @@ int main(int argc, const char * argv[]) {
         // Dropbox will actually report "it's up to date" for non-existing files within the watched directory,
         // so we handle this case separately by verifing that the file exists in the first place
         if (status == UpToDate && [[NSFileManager defaultManager] fileExistsAtPath: target] == NO) {
-            RDLog(@"%@", [DropboxStatusFetcher descriptionForSyncStatus: NotExist]);
+            RDPrint(@"%@", [DropboxStatusFetcher descriptionForSyncStatus: NotExist]);
             return EXIT_SUCCESS;
         }
 
-        RDLog(@"%@", [DropboxStatusFetcher descriptionForSyncStatus: status]);
+        RDPrint(@"%@", [DropboxStatusFetcher descriptionForSyncStatus: status]);
     }
     return 0;
 }
