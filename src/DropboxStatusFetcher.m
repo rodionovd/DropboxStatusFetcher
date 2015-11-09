@@ -137,7 +137,7 @@ static NSString * const kDropboxStatusFetcherRunLoopMode = @"DropboxStatusFetche
                                                          receivePort: self.localPort
                                                           components: @[numberData, data]];
     message.msgid = type;
-    _lastResponse = nil;
+    self.lastResponse = nil;
 
     if (NO == [message sendBeforeDate: [[NSDate alloc] initWithTimeIntervalSinceNow: kTimeout]]) {
         NSLog(@"Timed out sending the request!");
@@ -174,6 +174,7 @@ static NSString * const kDropboxStatusFetcherRunLoopMode = @"DropboxStatusFetche
 {
     if (message.components.count < 2) {
         NSLog(@"Invalid reponse: payload is missing");
+        self.lastResponse = nil;
     } else {
         self.lastResponse = [message.components lastObject];
     }
