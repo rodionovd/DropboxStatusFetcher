@@ -8,12 +8,13 @@
 
 #import "DropboxStatusFetcher.h"
 
+static NSString * const kDropboxStatusFetcherRunLoopMode = @"DropboxStatusFetcherRunLoopMode";
+
 #define HUMAN_READABLE_DESCRIPTIONS 1
 #define kTimeout (3)
 
 @interface DropboxStatusFetcher() <NSMachPortDelegate>
 {
-    BOOL _waitingForResponse;
     uint64_t _lastMsgIndex;
 }
 @property (strong) NSMachPort *localPort, *remotePort;
@@ -31,6 +32,7 @@
         // Setup a local port for listening
         _localPort = [[NSMachPort alloc] init];
         [[NSRunLoop mainRunLoop] addPort: _localPort forMode: NSDefaultRunLoopMode];
+        [[NSRunLoop mainRunLoop] addPort: _localPort forMode: kDropboxStatusFetcherRunLoopMode];
         [_localPort setDelegate: self];
         [self connect];
     }
@@ -135,19 +137,37 @@
                                                          receivePort: self.localPort
                                                           components: @[numberData, data]];
     message.msgid = type;
-    _waitingForResponse = YES;
+    _lastResponse = nil;
 
     if (NO == [message sendBeforeDate: [[NSDate alloc] initWithTimeIntervalSinceNow: kTimeout]]) {
         NSLog(@"Timed out sending the request!");
         return nil;
     }
 
-    // Wait for a reply to come
-    NSDate *timeOutDate = [NSDate dateWithTimeIntervalSinceNow: kTimeout];
-    while (_waitingForResponse) {
-        [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode beforeDate: timeOutDate];
-    }
+    [self waitForResponse];
     return self.lastResponse;
+}
+
+- (void)waitForResponse
+{
+    [[NSRunLoop mainRunLoop] runMode: kDropboxStatusFetcherRunLoopMode
+                          beforeDate: [[NSDate alloc] initWithTimeIntervalSinceNow: kTimeout]];
+
+    // Below is the original code from garkon. I don't like the idea of waiting for
+    // a response' data to come forever so what I do instead is spinning a runloop only once and then
+    // simply take what we've got so far (maybe nothing at all)
+    // ref. -[EFFinderClient waitForActiveResponseData:] from garcon/EFFinderClient.m
+
+//    do {
+//        CFRunLoopRunResult result = CFRunLoopRunInMode((CFStringRef)kDropboxStatusFetcherRunLoopMode, 1, true);
+//        if (result == kCFRunLoopRunFinished || result == kCFRunLoopRunStopped) {
+//            NSLog(@"Bailing on request because the run loop has stopped.");
+//            break;
+//        } else if (result == kCFRunLoopRunTimedOut) {
+//            NSLog(@"Bailing on request because we timed out.");
+//            break;
+//        }
+//    } while (_lastResponse == nil);
 }
 
 - (void)handlePortMessage: (NSPortMessage *)message
@@ -157,7 +177,6 @@
     } else {
         self.lastResponse = [message.components lastObject];
     }
-    _waitingForResponse = NO;
 }
 
 @end
