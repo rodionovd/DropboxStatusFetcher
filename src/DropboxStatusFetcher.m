@@ -162,10 +162,10 @@ static NSString * const kDropboxStatusFetcherRunLoopMode = @"DropboxStatusFetche
 //        CFRunLoopRunResult result = CFRunLoopRunInMode((CFStringRef)kDropboxStatusFetcherRunLoopMode, 1, true);
 //        if (result == kCFRunLoopRunFinished || result == kCFRunLoopRunStopped) {
 //            NSLog(@"Bailing on request because the run loop has stopped.");
-//            break;
+//            return;
 //        } else if (result == kCFRunLoopRunTimedOut) {
 //            NSLog(@"Bailing on request because we timed out.");
-//            break;
+//            return;
 //        }
 //    } while (_lastResponse == nil);
 }
