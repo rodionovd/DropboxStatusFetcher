@@ -152,22 +152,6 @@ static NSString * const kDropboxStatusFetcherRunLoopMode = @"DropboxStatusFetche
 {
     [[NSRunLoop mainRunLoop] runMode: kDropboxStatusFetcherRunLoopMode
                           beforeDate: [[NSDate alloc] initWithTimeIntervalSinceNow: kTimeout]];
-
-    // Below is the original code from garkon. I don't like the idea of waiting for
-    // a response' data to come forever so what I do instead is spinning a runloop only once and then
-    // simply take what we've got so far (maybe nothing at all)
-    // ref. -[EFFinderClient waitForActiveResponseData:] from garcon/EFFinderClient.m
-
-//    do {
-//        CFRunLoopRunResult result = CFRunLoopRunInMode((CFStringRef)kDropboxStatusFetcherRunLoopMode, 1, true);
-//        if (result == kCFRunLoopRunFinished || result == kCFRunLoopRunStopped) {
-//            NSLog(@"Bailing on request because the run loop has stopped.");
-//            return;
-//        } else if (result == kCFRunLoopRunTimedOut) {
-//            NSLog(@"Bailing on request because we timed out.");
-//            return;
-//        }
-//    } while (_lastResponse == nil);
 }
 
 - (void)handlePortMessage: (NSPortMessage *)message
